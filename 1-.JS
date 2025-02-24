@@ -10,42 +10,35 @@ Se o resto da divisão for menor que 2, então o dígito é igual a 0 (Zero).
 Se o resto da divisão for maior ou igual a 2, então o dígito verificador é igual a 11 menos o resto da divisão (11 - resto).
 Para o segundo digito:
 Faça o mesmo, porém multiplicando de 11 a 2*/
+function calculoloop(contador, cpfsodigitos){
+    let soma = 0
+    for (i=contador; i>1; i--){
+        soma += cpfsodigitos[contador-i] * i
+    }
+    let resultado = soma%11
 
+    if(
+        (resultado<2 && cpfsodigitos[contador -1]!=0)
+        || (resultado >= 2 && cpfsodigitos [contador - 1]!= 11 - resultado)
+    ){
+        return false
+    }
+    return true
+}
 
 function verificarCPF (cpf){
     let cpfsodigitos = cpf.replaceAll('.',''). replaceAll('-','').split('')
     if (cpfsodigitos.length != 11){
         return 'CPF Inválido'
     }
-    let soma = 0
-    for (i=10; i>1; i--){
-        soma += cpfsodigitos[10-i] * i
+    let resposta = calculoloop(10, cpfsodigitos)
+    if(!resposta){
+        return 'CPF inválido'
     }
-    let resultado = soma%11
-    if(resultado<2){
-        if(cpfsodigitos[9]!=0){
-            return 'CPF Inválido'
-        }
-    }else{
-        if(cpfsodigitos[9] != 11-resultado){
-            return 'CPF Inválido'
-        }
+    let resposta2 = calculoloop(11, cpfsodigitos)
+    if(!resposta2){
+        return 'CPF inválido'
     }
-    let soma2 = 0
-    for(i=11; i>1; i--){
-        soma2 += cpfsodigitos[11-i]* i
-    }
-    let resultado2 = soma2%11
-    if (resultado2 < 2){
-        if (cpfsodigitos[10] != 0){
-            return 'CPF Inválido'
-        }
-    }else{
-        if (cpfsodigitos[10] != 11 - resultado2){
-            return 'CPF Inválido'
-        }
-    }
-
 
     return 'CPF Válido'
 
