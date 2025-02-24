@@ -11,42 +11,28 @@ Se o resto da divisão for maior ou igual a 2, então o dígito verificador é i
 Para o segundo digito:
 Faça o mesmo, porém multiplicando de 11 a 2*/
 
-function verificarCPF(cpf) {
-    cpf = cpf.replace(/[^\d]/g, '');
 
-    if (cpf.length !== 11) {
-        return false;
+function verificarCPF (cpf){
+    let cpfsodigitos = cpf.replaceAll('.',''). replaceAll('-','').split('')
+    if (cpfsodigitos.length != 11){
+        return 'CPF Inválido'
     }
+    let soma = 0
+    for (i=10; i>1; i--){
+        soma += cpfsodigitos[10-i] * i
+    }
+    let resultado = soma%11
+    if(resultado<2){
+        if(cpfsodigitos[9]!=0){
+            return 'CPF Inválido'
+        }
+    }else{
+        if(cpfsodigitos[9] != 11-resultado){
+            return 'CPF Inválido'
+        }
+    }
+    return 'CPF Válido'
 
-    let soma1 = 0;
-    let peso1 = 10;
-    for (let i = 0; i < 9; i++) {
-        soma1 += parseInt(cpf[i]) * peso1;
-        peso1--;
-    }
-
-    let resto1 = soma1 % 11;
-    let digito1 = (resto1 < 2) ? 0 : 11 - resto1;
-
-    let soma2 = 0;
-    let peso2 = 11;
-    for (let i = 0; i < 9; i++) {
-        soma2 += parseInt(cpf[i]) * peso2;
-        peso2--;
-    }
-    soma2 += digito1 * 2; 
-    let resto2 = soma2 % 11;
-    let digito2 = (resto2 < 2) ? 0 : 11 - resto2;
-    if (parseInt(cpf[9]) === digito1 && parseInt(cpf[10]) === digito2) {
-        return true;
-    } else {
-        return false;
-    }
 }
-
-const cpf = "119.482.039-52"; 
-if (verificarCPF(cpf)) {
-    console.log("CPF válido.");
-} else {
-    console.log("CPF inválido.");
-}
+let cpf = '119.482.039-52'
+console.log (verificarCPF(cpf))
