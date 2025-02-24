@@ -31,8 +31,26 @@ function verificarCPF (cpf){
             return 'CPF Inválido'
         }
     }
+    let soma2 = 0
+    for(i=11; i>1; i--){
+        soma2 += cpfsodigitos[11-i]* i
+    }
+    let resultado2 = soma2%11
+    if (resultado2 < 2){
+        if (cpfsodigitos[10] != 0){
+            return 'CPF Inválido'
+        }
+    }else{
+        if (cpfsodigitos[10] != 11 - resultado2){
+            return 'CPF Inválido'
+        }
+    }
+
+
     return 'CPF Válido'
 
 }
 let cpf = '119.482.039-52'
+let cpf2 = '119.482.039-51'
 console.log (verificarCPF(cpf))
+console.log (verificarCPF(cpf2))
